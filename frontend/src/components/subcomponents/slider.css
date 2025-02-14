@@ -1,0 +1,33 @@
+.slider
+{
+    height:100%;
+    width: auto;
+    border-radius: 17px;
+    background-color: #211F1F;
+   display: flex;
+   flex-direction: column;
+   gap:40px;
+   
+}
+button
+{
+    width:268px;
+    height: 51px;
+    border-radius: 12px;
+    background-color: #79C543;
+    color:black;
+    font-size: 22px;
+    font-weight:bold;
+    border: none;
+}
+.top
+{
+    padding:20px;
+}
+.bottom
+{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+}

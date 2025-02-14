@@ -1,0 +1,86 @@
+.tile
+{
+    height:100%;
+    width: auto;
+    background-color: #211F1F;
+    border-radius: 17px;
+    display: flex;
+    gap:90px;
+    justify-content: center;
+    align-items: center;
+}
+.box1
+{
+    width:280px;
+    height: 180px;
+    border-radius: 17px;
+    background-color: #3E3C3C;
+    display: flex;
+    flex-direction: column;
+    
+}
+.box1 span
+{
+    font-size: 22px;
+    font-weight: bold;
+    color:white;
+}
+.box1 h1
+{
+    font-size: 40px;
+    font-weight: bold;
+    color:white;
+}
+.box1 p
+{
+    color:#79C543;
+
+}
+.box2
+{
+    width:280px;
+    height: 180px;
+    border-radius: 17px;
+    background-color: #3E3C3C;
+}
+.box2 span
+{
+    font-size: 22px;
+    font-weight: bold;
+    color:white;
+}
+.box2 h1
+{
+    font-size: 40px;
+    font-weight: bold;
+    color:white;
+}
+.box2 p
+{
+    color:#79C543;
+    
+}
+.box3
+{
+    width:280px;
+    height: 180px;
+    border-radius: 17px;
+    background-color: #3E3C3C;
+}
+.box3 span
+{
+    font-size: 22px;
+    font-weight: bold;
+    color:white;
+}
+.box3 h1
+{
+    font-size: 40px;
+    font-weight: bold;
+    color:white;
+}
+.box3 p
+{
+    color:#79C543;
+    
+}

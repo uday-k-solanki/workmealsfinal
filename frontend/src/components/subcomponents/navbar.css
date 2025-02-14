@@ -1,0 +1,60 @@
+.navbar
+{
+   
+    height: 100%;
+    width:auto;
+    border-radius: 17px;
+    background-color: #211F1F;
+    color:white;
+    display: flex;
+    gap:520px;
+    align-items: center;
+    padding-left:10px;
+
+}
+.left
+{
+    display: flex;
+    align-items: center;
+}
+.left span
+{
+    color:white;
+    font-family: "Righteous", serif;
+    font-size: 40px;
+}
+.left img
+{
+    width:70px;
+    height: 70px;
+}
+.right span
+{
+    color:white;
+    font-family: "Poppins", serif;
+
+}
+.right
+{
+    display: flex;
+    gap:200px;
+    align-items: center;
+}
+
+.userinfo
+{
+    display: flex;
+    gap:20px;
+    align-items: center;
+}
+.userinfo .profilepic
+{
+    height:50px;
+    width:50px;
+    background-color: yellow;
+    border-radius: 50%;
+}
+.date span
+{
+    font-size: 20px;
+}
