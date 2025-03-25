@@ -1,8 +1,28 @@
 .list
 {
     height:100%;
-    width: auto;  
+    width: 100%;  
     border-radius: 17px;
-    background-color: #211F1F;
+    background-color: #b73939;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
    
+}
+.list h1
+{
+    font-size:25px;
+    color:white;
+    font-weight: 400;
+}
+.list .table
+{
+    width:700px;
+}
+.list .table tr th
+{
+    height: 10px;
+    font-size: 12px;
+    text-align: center;
+    border-left: 1px solid #3E3C3C;
 }

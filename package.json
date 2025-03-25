@@ -1,8 +1,23 @@
 {
+  "name": "workmeals",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "concurrently \"cd backend && npm start\" \"cd frontend && npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "gh-pages": "^6.3.0"
   },
   "dependencies": {
-    "git": "^0.1.5"
+    "body-parser": "^1.20.3",
+    "git": "^0.1.5",
+    "multer": "^1.4.5-lts.1"
   }
 }

@@ -1,0 +1,57 @@
+.tiles
+{
+   
+   height: 100%;
+    display: flex;
+    gap:30px;
+    align-items: center;
+    justify-content: center;
+    background-color: #211F1F;
+    padding: 10px;
+    border-radius: 17px;
+}
+.tile1
+{
+    width:250px;
+    background-color: #3E3C3C;
+    border-radius: 17px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+    
+}
+.tile2
+{
+    
+    width:250px;
+    background-color: #3E3C3C;
+    border-radius: 17px;
+    height: 100%;
+}
+.tile3
+{                   
+    width:250px;
+    background-color: #3E3C3C;
+    border-radius: 17px;
+    height: 100%;
+}
+.heading
+{
+font-size: 24px;
+color:white;
+}
+.value
+{
+    font-size:35px;
+    color:white;
+    font-weight: bold;
+    margin-top: 3px;
+}
+.moredetails
+{
+    font-size: 18px;
+    color:#79C543;
+    font-weight:lighter;
+    margin-top:12px;
+}
