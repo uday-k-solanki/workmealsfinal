@@ -48,7 +48,7 @@ const Login = () => {
         <span className="msginfo">{msg}</span>
         <button className="loginbtn" id="loginbtn">LOGIN</button><br/>
         </form>
-        <span ><a href="" className="fp">Forgot password?</a></span>
+        
       </div>
 
     </div>

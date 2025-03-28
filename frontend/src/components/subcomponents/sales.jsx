@@ -5,31 +5,73 @@ import Slider from './slider';
 import './sales.css';
 
 const Sales = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+
     const [salesData, setSalesData] = useState([]);
     const [totalSales, setTotalSales] = useState(0);
+    const [onlinePayments, setOnlinePayments] = useState(0);
+    const [cashPayments, setCashPayments] = useState(0);
+    const [salaryDeducts, setSalaryDeducts] = useState(0);
 
-    const openDialog = () => setIsOpen(true);
-    const closeDialog = () => setIsOpen(false);
+    axios.post("http://localhost:8224/sendsalesamounts")
+    .then(res=>{
+      setOnlinePayments(res.data.totalOnlineSales)
+      setCashPayments(res.data.totalCashSales)
+      setSalaryDeducts(res.data.totalSalaryDeducts)
+      setTotalSales(res.data.totalSales)
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+    function getAllSales()
+    {
+    axios.post("http://localhost:8224/getallsales")
+    .then(res=>{
+        setSalesData(res.data.mysales)
+      
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+}
 
-    const handleGenerateReport = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:8224/getsales', {
-                startDate,
-                endDate
-            });
-            setSalesData(response.data.sales || []);
-            setTotalSales(response.data.totalSales || 0);
-            setIsOpen(false);
-        } catch (error) {
-            console.error('Error fetching sales data:', error);
-            alert('Error generating sales report');
-        }
-    };
-
+    function getOnlinePayments()
+    {
+      
+       
+        axios.post("http://localhost:8224/getonlinepayments")
+        .then(res=>{
+            console.log(res.data.onlinepayments)
+            setSalesData(res.data.onlinepayments)
+       
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+    function getCashpayments()
+    {
+        axios.post("http://localhost:8224/getcashpayments")
+        .then(res=>{
+           
+            setSalesData(res.data.cashpayments)
+      
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }   
+    function getSalaryDeducts()
+    {
+        axios.post("http://localhost:8224/getsalarydeducts")
+        .then(res=>{
+            setSalesData(res.data.salarydeducts)
+         
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+  
     return (
         <div className="dashboard">
             <div className="container">
@@ -43,41 +85,31 @@ const Sales = () => {
                     <div className="col2">
                         <div className="header">
                             <h1>Sales Report</h1>
-                            <button className="btn" onClick={openDialog}>
-                                Generate Report
-                            </button>
+                        
                         </div>
                         <hr className="line" />
                         
-                        {isOpen && (
-                            <>
-                                <div className="overlay" onClick={closeDialog}></div>
-                                <div className="inptcontainer">
-                                    <button className="close" onClick={closeDialog}>×</button>
-                                    <form onSubmit={handleGenerateReport}>
-                                        <div className="formfields">
-                                            <input
-                                                type="date"
-                                                value={startDate}
-                                                onChange={(e) => setStartDate(e.target.value)}
-                                                required
-                                            />
-                                            <input
-                                                type="date"
-                                                value={endDate}
-                                                onChange={(e) => setEndDate(e.target.value)}
-                                                required
-                                            />
-                                            <button type="submit" className="btn">
-                                                Generate
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </>
-                        )}
+                       
 
                         <div className="sales-container">
+                            <div className="headerbox">
+                            <div className="boxofsales">
+                                
+                                <span className="box-title">Online Payments: ₹{onlinePayments}</span>
+                                <span className="box-title">Cash Payments: ₹{cashPayments}</span>
+                                <span className="box-title">Salary Deducts: ₹{salaryDeducts}</span>
+                                <span className="box-title">Total Sales: ₹{totalSales}</span>
+
+                            </div>
+                            <div className="salesactions">
+                                <div className="buttonactions">
+                                <button className="actionbutton active" onClick={getAllSales}>All</button>
+                                    <button className="actionbutton" onClick={getOnlinePayments}>Online Payments</button>
+                                    <button className="actionbutton" onClick={getCashpayments}>Cash Payments</button>
+                                    <button className="actionbutton" onClick={getSalaryDeducts}>Salary Deducts</button>
+                                </div>
+                            </div>
+                            </div>
                             <div className="listcontainer">
                                 <table>
                                     <thead>
@@ -85,30 +117,25 @@ const Sales = () => {
                                             <th>Order ID</th>
                                             <th>Date</th>
                                             <th>Customer</th>
-                                            <th>Items</th>
-                                            <th>Total Amount</th>
+                                            <th>Amount</th>
+                                            
                                             <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {salesData.map((sale) => (
-                                            <tr key={sale.orderId}>
-                                                <td>{sale.orderId}</td>
-                                                <td>{new Date(sale.date).toLocaleDateString()}</td>
-                                                <td>{sale.customer}</td>
-                                                <td>{sale.items.join(', ')}</td>
+                                            <tr key={sale.orderID}>
+                                                <td>{sale.orderID}</td>
+                                                <td>{sale.dateTime}</td>
+                                                <td>{sale.employeeID}</td>
                                                 <td>₹{sale.totalAmount}</td>
-                                                <td>{sale.status}</td>
+                                                <td>{sale.paymentStatus}</td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
-                            {salesData.length > 0 && (
-                                <div className="total-sales">
-                                    <h2>Total Sales: ₹{totalSales}</h2>
-                                </div>
-                            )}
+                           
                         </div>
                     </div>
                 </div>

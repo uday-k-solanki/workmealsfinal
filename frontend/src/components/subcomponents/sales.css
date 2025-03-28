@@ -66,9 +66,11 @@
 
 .col2 .sales-container {
     width: 1100px;
+    height:550px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    padding-top: 0;
+    gap: 40px;
 }
 
 .col2 .sales-container .inptcontainer {
@@ -138,6 +140,7 @@
     border-collapse: collapse;
     background-color: #3A3A3A;
     table-layout: fixed;
+    
 }
 
 /* Fixed header styles */
@@ -148,6 +151,8 @@
     z-index: 1;
     display: table;
     width: 100%;
+    padding: 0;
+    margin-top: -10px;
 }
 
 .col2 .sales-container .listcontainer table tbody {
@@ -212,7 +217,7 @@
 /* Button styles */
 .btn {
     background-color: #79C543;
-    color: white;
+  
     border: none;
     padding: 8px 16px;
     border-radius: 4px;
@@ -237,3 +242,52 @@
     margin: 0;
     font-size: 24px;
 } 
+.boxofsales
+{
+    width:270px;
+    height:160px;
+    background-color: #3A3A3A;
+    border-radius: 17px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+.boxofsales .box-title
+{
+    font-size: 20px;
+    font-weight: 400;
+    color: white;
+    border-bottom: 1px solid #79C543;
+}
+.headerbox
+{
+    width:100%;
+    height:160px;
+    display: flex;
+
+    gap: 10px;
+}
+.headerbox .salesactions
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.buttonactions
+{
+    display: flex;
+    gap: 1px;
+}
+.actionbutton
+{
+    scale: 0.85;
+    width:200px;
+    cursor: pointer;
+}
+.actionbutton:hover
+{
+    background-color: #6ba442;
+}

@@ -1,0 +1,21 @@
+.suggestions-container
+{
+    width: 1100px;
+    height:550px;
+    display: flex;
+    flex-direction: column;
+}
+.suggestions-table
+{
+    width: 1100px;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.suggestions-table th
+{
+    padding: 0;
+    border: none;
+    padding-right:70px;
+}
+

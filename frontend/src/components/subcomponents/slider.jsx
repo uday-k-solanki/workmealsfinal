@@ -15,9 +15,9 @@ const Slider = () => {
       <Link to="/dashboard/employees"><button>EMPLOYEES</button></Link>
       <Link to="/dashboard/menu"><button>MENU</button></Link>
       <Link to="/dashboard/sales"><button>SALES</button></Link>
-      <button>ORDERS</button>
-      <button>PAYMENTS</button>
-      <button>ORDER HISTORY</button>
+      <Link to="/dashboard/orders"><button>ORDERS</button></Link>
+      <Link to="/dashboard/suggestions"><button>SUGGESTIONS</button></Link>
+      <Link to="/"><button className='logoutbtn'>LOGOUT</button></Link>
      
       </div>
     </div>

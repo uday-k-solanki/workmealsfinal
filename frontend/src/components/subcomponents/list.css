@@ -18,6 +18,7 @@
 .list .table
 {
     width:700px;
+   
 }
 .list .table tr th
 {
@@ -25,4 +26,8 @@
     font-size: 12px;
     text-align: center;
     border-left: 1px solid #3E3C3C;
+}
+.list .table tr td #approve-button
+{
+   scale: 0.6;
 }

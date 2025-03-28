@@ -3,6 +3,7 @@ import Logo from "../../assets/workmeallogo.png"
 import "./navbar.css"
 import {Link} from "react-router-dom"
 import { useState,useEffect } from 'react'
+
 const Navbar = () => {
   const [time, setTime] = useState("");
 
@@ -46,9 +47,9 @@ const Navbar = () => {
      <div className="right">
       <div className="date"><span>{time}</span></div> 
       <div className="userinfo">
-        <span>uday</span>
-        <div className="profilepic"></div>
-        <Link to="/"><button className='logoutbtn'>Logout</button></Link>
+        <span>Maitri</span>
+        <div className="profilepic">M</div>
+        
       </div>
       </div>
     </div>

@@ -390,22 +390,306 @@ app.post("/deletefood",(req,res)=>{
         }
     })
 })
+let orderDetails = {}; 
+let message=""
 //confirmcash
 app.post("/confirmcash",(req,res)=>
 {
-    const orderDetails=req.body
+     orderDetails=req.body
     console.log("cofirming order")
     console.log(orderDetails)
+  
 })
-//send cash payment to dashboard
-app.post("/sendcash",(req,res)=>
-{
-    res.status(200).json({cashpayment:orderDetails})
-})
+
 //getorder
 app.post("/addorder",(req,res)=>{
-    const orderDetails=req.body
+     orderDetails=req.body
     console.log(orderDetails)
+   
+})
+//send cash payment to dashboard
+if(orderDetails!=="")
+{
+app.post("/sendcash", (req, res) => {
+    res.status(200).json({ cashpayment: orderDetails });
+    
+});
+
+}
+//approve cash payment
+let isPaymentApproved = ""; // Global variable to store approval status
+
+// Route to Approve Cash Payment
+app.post("/approvecash", (req, res) => {
+    const {approved} = req.body;
+    console.log(approved)
+    if (approved===true) {
+        console.log("dashboard response",{approved})
+        isPaymentApproved = "true"; // Store the approval status
+        res.status(200).json({ message: "Cash payment approved" });
+        
+    } else {
+        isPaymentApproved=""
+        res.status(400).json({ message: "Payment not approved" });
+    }
+});
+console.log(isPaymentApproved)
+// Separate Route for Checking Approval Status
+app.post("/paymentapprove", (req, res) => {
+   
+    if (isPaymentApproved==="true") {
+        message="okay"
+        res.status(200).json({ message:message});
+        console.log("Payment approved by dashboard")
+        
+        setTimeout(() => {
+            orderDetails={}
+            message = ""
+            isPaymentApproved=""
+        }, 3000);
+        
+    } else {
+        isPaymentApproved=""
+        res.status(200).json({ message:message });
+        console.log("Payment not yet approved by dashboard")
+    }
+
+});
+
+//oreder to database
+app.post("/orderplaced",(req,res)=>{
+ const finalorder=req.body
+ const [{ employeeId, items, totalAmount, dateTime, token, paymentMethod, paymentStatus }] = finalorder;
+
+// Convert items array to a JSON string (for SQL insertion)
+const itemsJson = JSON.stringify(items);
+
+console.log(employeeId, itemsJson, totalAmount, dateTime, token, paymentMethod, paymentStatus);
+const insertorder="INSERT INTO orders (employeeID,items,totalAmount,dateTime,token,paymentMethod,paymentStatus) VALUES (?,?,?,?,?,?,?)"
+db.query(insertorder,[employeeId,itemsJson,totalAmount,dateTime,token,paymentMethod,paymentStatus],(err,result)=>{
+    if(err)
+    {
+        console.log("error in inserting order")
+    }
+    else
+    {
+        console.log("order inserted successfully")
+    }
+})
+})
+//get sales
+//all
+app.post("/getallsales",(req,res)=>{
+    const fetchsales="SELECT * FROM orders"
+    db.query(fetchsales,(err,result)=>{
+        if(err)
+        {
+            res.status(200).json({message:"error in fetching sales"})
+            console.log(err)
+        }
+        else
+        {
+            res.status(200).json({mysales:result})
+        }
+    })
+})
+//get online payments
+app.post("/getonlinepayments",(req,res)=>{
+    const fetchonline="SELECT * FROM orders WHERE paymentMethod='Online'"
+    db.query(fetchonline,(err,result)=>{
+        if(err)
+        {
+            res.status(200).json({message:"error in fetching online payments"})
+            console.log(err)
+        }
+        else
+        {
+            res.status(200).json({onlinepayments:result})
+        }
+    })
+        
+})
+//get cash payments
+app.post("/getcashpayments",(req,res)=>{
+    const fetchcash="SELECT * FROM orders WHERE paymentMethod='Cash'"
+    db.query(fetchcash,(err,result)=>{
+        if(err)
+        {
+            res.status(200).json({message:"error in fetching cash payments"})
+            console.log(err)
+        }
+        else
+        {
+            res.status(200).json({cashpayments:result})
+        }
+    })
+})
+//get salary deducts
+app.post("/getsalarydeducts",(req,res)=>{
+    const fetchsalary="SELECT * FROM orders WHERE paymentMethod='salary deduct'"
+    db.query(fetchsalary,(err,result)=>{
+        if(err)
+        {
+            res.status(200).json({message:"error in fetching salary deducts"})
+            console.log(err)
+        }
+        else
+        {
+            res.status(200).json({salarydeducts:result})
+        }
+    })
+})
+
+//send sales amounts
+app.post("/sendsalesamounts", async (req, res) => {
+    try {
+        const fetchAllSales = "SELECT SUM(totalAmount) AS total_amount FROM orders;";
+        const fetchOnlinePayments = "SELECT SUM(totalAmount) AS total_amount FROM orders WHERE paymentMethod='online'";
+        const fetchCashPayments = "SELECT SUM(totalAmount) AS total_amount FROM orders WHERE paymentMethod='cash'";
+        const fetchSalaryDeducts = "SELECT SUM(totalAmount) AS total_amount FROM orders WHERE paymentMethod='salary deduct'";
+
+        // Execute all queries in parallel
+        const [allSales, onlineSales, cashSales, salaryDeducts] = await Promise.all([
+            db.promise().query(fetchAllSales),
+            db.promise().query(fetchOnlinePayments),
+            db.promise().query(fetchCashPayments),
+            db.promise().query(fetchSalaryDeducts)
+        ]);
+
+        // Extract values from results
+        res.json({
+            totalSales: allSales[0][0].total_amount || 0,
+            totalOnlineSales: onlineSales[0][0].total_amount || 0,
+            totalCashSales: cashSales[0][0].total_amount || 0,
+            totalSalaryDeducts: salaryDeducts[0][0].total_amount || 0
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error fetching sales amounts", error: error.message });
+    }
+});
+//send orders to orderpage
+app.post("/sendorders",(req,res)=>{
+    const fetchorders="SELECT * FROM orders"
+    db.query(fetchorders,(err,result)=>{
+        if(err)
+        {
+            res.status(200).json({message:"error in fetching orders"})
+        }
+        else
+        {
+            res.status(200).json({myorders:result})
+        }
+    })
+})
+//add suggestions
+app.post("/addsuggestions",(req,res)=>{
+    const {emp,itemName,itemPrice,category}=req.body
+    const insertsuggestion="INSERT INTO suggestions (employeeID,itemName,itemPrice,category) VALUES (?,?,?,?)"
+    db.query(insertsuggestion,[emp.toUpperCase(),itemName,itemPrice,category],(err,result)=>{
+        if(err)
+        {
+            res.status(200).json({message:"error in adding suggestions"})
+            console.log(err)
+        }
+        else
+        {
+            res.status(200).json({message:"suggestions added successfully"})
+        }
+    })
+})
+//send suggestions
+app.post("/sendsuggestions",(req,res)=>{
+    const fetchsuggestions="SELECT * FROM suggestions"
+    db.query(fetchsuggestions,(err,result)=>{
+        if(err)
+        {
+            res.status(200).json({message:"error in fetching suggestions"})
+            console.log(err)
+        }
+        else
+        {
+            res.status(200).json({mysuggestions:result})
+        }
+    })
+})
+//totalorder
+app.post("/totalorders",(req,res)=>{
+    const fetchtotalorders="SELECT COUNT(*) AS total_orders FROM orders"
+    db.query(fetchtotalorders,(err,result)=>{
+        if(err)
+        {
+            res.status(200).json({message:"error in fetching total orders"})
+            console.log(err)
+        }
+        else
+        {
+            res.status(200).json({totalorders:result[0].total_orders})
+        }
+    })
+})
+//total sales
+app.post("/totalsales",(req,res)=>{
+    const fetchtotalsales="SELECT SUM(totalAmount) AS total_sales FROM orders"
+    db.query(fetchtotalsales,(err,result)=>{
+        if(err)
+        {
+            res.status(200).json({message:"error in fetching total sales"})
+            console.log(err)
+        }
+        else
+        {
+            res.status(200).json({totalsales:result[0].total_sales})
+        }
+    })
+})
+//total employees
+app.post("/totalemployees",(req,res)=>{
+    const fetchtotalemployees="SELECT COUNT(*) AS total_employees FROM employees"
+    db.query(fetchtotalemployees,(err,result)=>{
+        if(err)
+        {
+            res.status(200).json({message:"error in fetching total employees"})
+            console.log(err)
+        }
+        else
+        {
+            res.status(200).json({totalemployees:result[0].total_employees})
+        }
+    })  
+})
+//showorderhistory
+app.post("/showorderhistory",(req,res)=>{
+    const {emp}=req.body
+    const gethistory="SELECT * FROM orders WHERE employeeID=?"
+    db.query(gethistory,[emp],(err,result)=>{
+        if(err)
+        {
+            console.log("error in fetching history")
+        }
+        else
+        {
+            res.status(200).json({myorderhistory:result})
+        }
+    })
+})
+
+//searching orders
+app.post("/searchorder",(req,res)=>{
+    const {empID}=req.body
+    const search="SELECT * FROM orders WHERE employeeID=?"
+    db.query(search,[empID],(err,result)=>{
+        if(err)
+        {
+            console.log("error in fetching data")
+        }
+        else
+        {
+            console.log(result)
+            res.status(200).json({searchedorders:result})
+        }
+    })
 })
 //listen
 app.listen(8224,()=>

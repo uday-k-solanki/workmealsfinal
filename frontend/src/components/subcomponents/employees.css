@@ -167,7 +167,7 @@
 .col2 .empcontainer .listcontainer 
 {
     width: 1100px;
-    height: 600px;
+    height: 550px;
     display: flex;
     justify-content: center;
     overflow: auto;

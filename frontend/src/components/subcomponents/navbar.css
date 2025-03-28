@@ -10,7 +10,7 @@
     gap:520px;
     align-items: center;
     padding-left:10px;
-
+   
 }
 .left
 {
@@ -37,7 +37,7 @@
 .right
 {
     display: flex;
-    gap:200px;
+    gap:250px;
     align-items: center;
 }
 
@@ -53,6 +53,11 @@
     width:50px;
     background-color: yellow;
     border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color:rgb(59, 57, 57);
 }
 .date span
 {
